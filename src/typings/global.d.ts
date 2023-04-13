@@ -1,7 +1,7 @@
 // * Menu
 declare namespace Menu {
   interface MenuOptions {
-    path?: string;
+    path: string;
     key?: string;
     name: string;
     component?: string | (() => Promise<any>);
@@ -16,7 +16,6 @@ declare namespace Menu {
     isLink?: string;
     isHide: boolean;
     isFull: boolean;
-    isAffix: boolean;
     isKeepAlive: boolean;
   }
 }

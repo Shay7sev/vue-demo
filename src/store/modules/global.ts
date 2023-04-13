@@ -1,6 +1,7 @@
 import { defineStore } from 'pinia';
 import { GlobalState, ThemeConfigProps, AssemblySizeType } from '../interface';
 import { DEFAULT_PRIMARY } from '@/config/config';
+import piniaPersistConfig from '@/config/piniaPersist';
 
 // defineStore 调用后返回一个函数，调用该函数获得 Store 实体
 export const GlobalStore = defineStore({
@@ -22,7 +23,7 @@ export const GlobalStore = defineStore({
       // 当前页面是否全屏
       maximize: false,
       // 布局切换 ==>  纵向：vertical | 经典：classic | 横向：transverse | 分栏：columns
-      layout: 'transverse',
+      layout: 'classic',
       // 默认 primary 主题颜色
       primary: DEFAULT_PRIMARY,
       // 深色模式
@@ -68,4 +69,5 @@ export const GlobalStore = defineStore({
       this.themeConfig = themeConfig;
     },
   },
+  persist: piniaPersistConfig('GlobalState'),
 });

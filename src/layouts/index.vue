@@ -8,10 +8,10 @@
 import { computed, type Component } from 'vue';
 import { GlobalStore } from '@/store/modules/global';
 import ThemeDrawer from './components/ThemeDrawer/index.vue';
-import LayoutTransverse from './LayoutTransverse/index.vue';
+import LayoutClassic from './LayoutClassic/index.vue';
 
 const LayoutComponents: { [key: string]: Component } = {
-  transverse: LayoutTransverse,
+  classic: LayoutClassic,
 };
 
 const globalStore = GlobalStore();
