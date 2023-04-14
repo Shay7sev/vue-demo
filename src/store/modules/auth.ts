@@ -1,6 +1,11 @@
 import { defineStore } from 'pinia';
 import { AuthState } from '@/store/interface';
-import { getFlatArr, getShowMenuList } from '@/utils/util';
+import { getAuthMenuListApi } from '@/api/modules/login';
+import {
+  getFlatArr,
+  getShowMenuList,
+  getAllBreadcrumbList,
+} from '@/utils/util';
 
 // AuthStore
 export const AuthStore = defineStore({
@@ -22,6 +27,8 @@ export const AuthStore = defineStore({
     showMenuListGet: (state) => getShowMenuList(state.authMenuList),
     // 扁平化之后的一维数组路由，主要用来添加动态路由
     flatMenuListGet: (state) => getFlatArr(state.authMenuList),
+    // 所有面包屑导航列表
+    breadcrumbListGet: (state) => getAllBreadcrumbList(state.authMenuList),
   },
   actions: {
     // getAuthButtonList
@@ -30,7 +37,8 @@ export const AuthStore = defineStore({
     },
     // getAuthMenuList
     async getAuthMenuList() {
-      this.authMenuList = [];
+      const { data } = await getAuthMenuListApi();
+      this.authMenuList = data;
     },
     // setRouteName
     async setRouteName(name: string) {

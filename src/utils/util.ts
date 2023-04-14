@@ -1,25 +1,15 @@
 import { isArray } from '@/utils/is';
 
-declare namespace Menu {
-  interface MenuOptions {
-    path?: string;
-    key?: string;
-    name: string;
-    component?: string | (() => Promise<any>);
-    redirect?: string;
-    meta?: MetaProps;
-    children?: MenuOptions[];
-  }
-  interface MetaProps {
-    icon: string;
-    title: string;
-    activeMenu?: string;
-    isLink?: string;
-    isHide: boolean;
-    isFull: boolean;
-    isAffix: boolean;
-    isKeepAlive: boolean;
-  }
+/**
+ * @description 判断数据类型
+ * @param {Any} val 需要判断类型的数据
+ * @return string
+ */
+export function isType(val: any) {
+  if (val === null) return 'null';
+  if (typeof val !== 'object') return typeof val;
+  else
+    return Object.prototype.toString.call(val).slice(8, -1).toLocaleLowerCase();
 }
 
 /**
@@ -32,11 +22,11 @@ export function getTimeState() {
   // 获取当前小时
   const hours = timeNow.getHours();
   // 判断当前时间段
-  if (hours >= 6 && hours <= 10) return '早上好 ⛅';
-  if (hours >= 10 && hours <= 14) return '中午好 🌞';
-  if (hours >= 14 && hours <= 18) return '下午好 🌞';
-  if (hours >= 18 && hours <= 24) return '晚上好 🌛';
-  if (hours >= 0 && hours <= 6) return '凌晨好 🌛';
+  if (hours >= 6 && hours <= 10) return '早上好 ';
+  if (hours >= 10 && hours <= 14) return '中午好 ';
+  if (hours >= 14 && hours <= 18) return '下午好 ';
+  if (hours >= 18 && hours <= 24) return '晚上好 ';
+  if (hours >= 0 && hours <= 6) return '凌晨好 ';
 }
 
 /**
@@ -90,6 +80,26 @@ export function getShowMenuList(menuList: Menu.MenuOptions[]) {
     return !item.meta?.isHide;
   });
 }
+
+/**
+ * @description 递归找出所有面包屑存储到 pinia/vuex 中
+ * @param {Array} menuList 所有菜单列表
+ * @param {Object} result 输出的结果
+ * @param {Array} parent 父级菜单
+ * @returns object
+ */
+export const getAllBreadcrumbList = (
+  menuList: Menu.MenuOptions[],
+  result: { [key: string]: any } = {},
+  parent = []
+) => {
+  for (const item of menuList) {
+    result[item.path] = [...parent, item];
+    if (item.children)
+      getAllBreadcrumbList(item.children, result, result[item.path]);
+  }
+  return result;
+};
 
 /**
  * @description 根据枚举列表查询当需要的数据（如果指定了 label 和 value 的 key值，会自动识别格式化）
